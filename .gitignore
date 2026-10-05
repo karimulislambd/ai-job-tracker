@@ -30,3 +30,6 @@ next-env.d.ts
 .idea/
 .vscode/
 *.log
+
+# Local Redis snapshots
+dump.rdb
