@@ -67,7 +67,7 @@ export default function Home() {
         <section className="mx-auto max-w-4xl px-4 pb-16 pt-12 text-center sm:pt-20">
           <p className="mb-4 inline-flex items-center gap-2 rounded-full border border-border bg-surface px-3 py-1 text-xs font-medium text-fg-muted">
             <span className="size-1.5 rounded-full bg-emerald-500" aria-hidden />
-            Open source · FastAPI + Next.js + Llama 3.3 70B
+            Open source · FastAPI + Next.js + GPT-OSS 120B
           </p>
           <h1 className="text-balance text-4xl font-semibold tracking-tight sm:text-6xl">
             Run your job search like a <span className="text-accent">pipeline</span>.
