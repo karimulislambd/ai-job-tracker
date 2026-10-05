@@ -90,7 +90,7 @@ async def login(
 @router.post(
     "/refresh",
     response_model=TokenResponse,
-    dependencies=[Depends(verify_origin), Depends(rate_limit("auth:refresh"))],
+    dependencies=[Depends(verify_origin), Depends(rate_limit("auth:refresh", multiplier=6))],
     summary="Rotate the refresh-token cookie and get a new access token",
 )
 async def refresh(
