@@ -10,6 +10,8 @@ const proxyTarget = process.env.API_PROXY_TARGET?.replace(/\/$/, "");
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  // Self-contained server bundle for the Docker image (Vercel doesn't need it).
+  output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   async rewrites() {
     if (!proxyTarget) return [];
     return [

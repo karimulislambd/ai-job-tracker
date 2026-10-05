@@ -1,0 +1,41 @@
+# Render Blueprint for the backend (free plan).
+# The database is NOT a Render Postgres (free instances expire): DATABASE_URL points to Neon.
+# Secrets marked `sync: false` are entered in the Render dashboard on first deploy.
+services:
+  - type: web
+    name: ai-job-tracker-api
+    runtime: docker
+    plan: free
+    region: frankfurt
+    rootDir: backend
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: ENVIRONMENT
+        value: production
+      - key: DATABASE_URL
+        sync: false # Neon connection string (direct, non-pooled host recommended)
+      - key: JWT_SECRET
+        generateValue: true
+      - key: FRONTEND_ORIGIN
+        sync: false # e.g. https://ai-job-tracker.vercel.app
+      - key: GROQ_API_KEY
+        sync: false
+      - key: GROQ_MODEL
+        value: llama-3.3-70b-versatile
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: COOKIE_SAMESITE
+        value: lax # proxy mode (recommended); use "none" for direct cross-site mode
+      - key: RUN_WORKER_IN_API
+        value: "true" # free tier has no background workers
+      - key: DEMO_ENABLED
+        value: "true"
+      - key: LOG_JSON
+        value: "true"
+      - key: DB_POOL_SIZE
+        value: "3"
+      - key: DB_MAX_OVERFLOW
+        value: "2"
+      # Optional: REDIS_URL (e.g. Upstash). Without it, in-memory fallbacks are used.
