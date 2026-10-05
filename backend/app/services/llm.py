@@ -71,7 +71,7 @@ class GroqLLMClient:
                 ],
                 response_format={"type": "json_object"},
                 temperature=0.2,
-                max_tokens=1_800,
+                max_tokens=4_096,  # gpt-oss spends part of the budget on reasoning
             )
         except groq.RateLimitError as exc:
             raise LLMError(f"Groq rate limited: {exc}") from exc

@@ -103,7 +103,7 @@ flowchart LR
   end
   DB[("PostgreSQL 16 · Neon<br/>app data + jobs table")]
   RD[("Redis (optional)<br/>rate limits + stats cache")]
-  G["Groq API<br/>llama-3.3-70b-versatile"]
+  G["Groq API<br/>openai/gpt-oss-120b"]
 
   UI -->|HTTPS| RW --> API
   API -->|async SQLAlchemy / asyncpg| DB
@@ -416,7 +416,7 @@ A sample CV to try the upload flow is in [`docs/sample-cv.pdf`](docs/sample-cv.p
 | `COOKIE_SAMESITE` | `lax` | `lax` for proxy mode, `none` for direct cross-site mode. |
 | `COOKIE_DOMAIN` | unset | Usually leave unset. |
 | `GROQ_API_KEY` | unset | Enables Groq. Without it, the offline heuristic is used. |
-| `GROQ_MODEL` | `llama-3.3-70b-versatile` | |
+| `GROQ_MODEL` | `openai/gpt-oss-120b` | |
 | `REDIS_URL` | unset | Optional, for rate limits and the stats cache. |
 | `AUTH_RATE_LIMIT` / `AUTH_RATE_WINDOW_SECONDS` | `10` / `60` | Per-IP limit on login, register and demo. Refresh gets 6× the limit. |
 | `RUN_WORKER_IN_API` | `true` | Set `false` when running `python -m app.worker` separately. |
