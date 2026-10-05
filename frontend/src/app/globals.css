@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+/* Dark mode follows the data-theme attribute set before first paint (see layout.tsx). */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+:root {
+  color-scheme: light;
+  --bg: #f7f7f5;
+  --surface: #ffffff;
+  --surface-2: #f1f1ee;
+  --border: rgba(11, 11, 11, 0.1);
+  --fg: #0b0b0b;
+  --fg-muted: #52514e;
+  --fg-subtle: #6f6e69;
+  --accent: #2563eb;
+  --accent-fg: #ffffff;
+  --accent-soft: #e8efff;
+  --ring: #2563eb;
+  --danger: #c62828;
+
+  /* Chart roles (validated: series-1 passes on both surfaces) */
+  --chart-series-1: #2a78d6;
+  --chart-grid: #e1e0d9;
+  --chart-axis: #898781;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0e0e10;
+  --surface: #18181b;
+  --surface-2: #222226;
+  --border: rgba(255, 255, 255, 0.1);
+  --fg: #fafafa;
+  --fg-muted: #c3c2b7;
+  --fg-subtle: #9a9992;
+  --accent: #5b8def;
+  --accent-fg: #0b0b0b;
+  --accent-soft: #1d2a45;
+  --ring: #7aa2ff;
+  --danger: #f07070;
+
+  --chart-series-1: #3987e5;
+  --chart-grid: #2c2c2a;
+  --chart-axis: #898781;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-accent: var(--accent);
+  --color-accent-fg: var(--accent-fg);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --font-sans: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
