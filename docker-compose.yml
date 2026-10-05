@@ -1,0 +1,60 @@
+# Local development stack: PostgreSQL 16 + Redis + API (+ in-process worker) + frontend.
+#   docker compose up --build        -> http://localhost:3000  (API docs: http://localhost:8000/docs)
+# Optional: copy backend/.env.example to backend/.env to set GROQ_API_KEY etc.
+name: ai-job-tracker
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: jobtracker
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d jobtracker"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7-alpine
+    ports: ["6379:6379"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build: ./backend
+    env_file:
+      - path: ./backend/.env
+        required: false
+    environment:
+      ENVIRONMENT: development
+      LOG_JSON: "false"
+      DATABASE_URL: postgresql+asyncpg://postgres:postgres@postgres:5432/jobtracker
+      REDIS_URL: redis://redis:6379/0
+      JWT_SECRET: ${JWT_SECRET:-local-dev-secret-change-me-0123456789abcdef}
+      FRONTEND_ORIGIN: http://localhost:3000
+      COOKIE_SECURE: "false"
+      COOKIE_SAMESITE: lax
+      RUN_WORKER_IN_API: "true"
+    ports: ["8000:8000"]
+    depends_on:
+      postgres: { condition: service_healthy }
+      redis: { condition: service_healthy }
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        # The browser talks to the API directly; localhost:3000 and :8000 are same-site.
+        NEXT_PUBLIC_API_URL: http://localhost:8000
+    ports: ["3000:3000"]
+    depends_on: [api]
+
+volumes:
+  pgdata:
