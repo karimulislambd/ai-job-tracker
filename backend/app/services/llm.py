@@ -14,6 +14,8 @@ import time
 from dataclasses import dataclass
 from typing import Protocol
 
+import httpx
+
 from app.core.config import Settings
 
 
@@ -41,11 +43,20 @@ class LLMClient(Protocol):
 
 
 class GroqLLMClient:
-    def __init__(self, api_key: str, model: str, timeout: float) -> None:
+    def __init__(
+        self,
+        api_key: str,
+        model: str,
+        timeout: float,
+        http_client: httpx.AsyncClient | None = None,
+    ) -> None:
         from groq import AsyncGroq
 
         self.model = model
-        self._client = AsyncGroq(api_key=api_key, timeout=timeout, max_retries=0)
+        # Retries are owned by the job queue (with backoff + persisted errors), not the SDK.
+        self._client = AsyncGroq(
+            api_key=api_key, timeout=timeout, max_retries=0, http_client=http_client
+        )
 
     async def complete_json(self, system: str, user: str) -> LLMResponse:
         import groq
