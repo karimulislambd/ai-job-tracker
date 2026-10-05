@@ -29,7 +29,7 @@ logger = logging.getLogger("app")
 
 API_DESCRIPTION = """
 Track job applications on a Kanban board, keep a status-change timeline, upload your CV and
-get an **AI match analysis** (Groq · Llama 3.3 70B) processed by a Postgres-backed job queue.
+get an **AI match analysis** (Groq · GPT-OSS 120B) processed by a Postgres-backed job queue.
 
 **Auth:** `POST /api/v1/auth/login` (or `/auth/demo`) returns a short-lived JWT access token;
 send it as `Authorization: Bearer <token>`. A rotating refresh token lives in an httpOnly cookie.

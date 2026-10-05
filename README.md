@@ -12,7 +12,7 @@
 
 AI Job Tracker is a full-stack SaaS app: a Kanban board of job applications with a
 status-change timeline, a dashboard of search analytics computed in SQL, versioned CV
-uploads, and an **AI match analysis** (Groq · Llama 3.3 70B) that scores your CV against
+uploads, and an **AI match analysis** (Groq · GPT-OSS 120B) that scores your CV against
 a job description and writes tailored CV bullets and a cover-letter draft.
 
 I built it to show **backend engineering**, not just an LLM call: a normalized
