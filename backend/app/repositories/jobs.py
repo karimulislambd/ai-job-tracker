@@ -8,7 +8,7 @@ them without blocking on rows another worker is already claiming.
 from __future__ import annotations
 
 import random
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta
 from typing import Any
 
 from sqlalchemy import func, select, text, update
@@ -77,10 +77,12 @@ class JobRepository:
                 locked_by=worker_id,
             )
             .returning(Job)
-            .execution_options(synchronize_session=False)
+            # Refresh any instances already in the identity map with the RETURNING values.
+            .execution_options(synchronize_session=False, populate_existing=True)
         )
         result = await self.session.execute(stmt)
-        return list(result.scalars().all())
+        # UPDATE ... RETURNING doesn't preserve the subquery's order; restore FIFO.
+        return sorted(result.scalars().all(), key=lambda j: (j.run_after, j.id))
 
     async def complete(self, job_id: int) -> None:
         await self.session.execute(
@@ -99,10 +101,12 @@ class JobRepository:
         *,
         base_backoff_seconds: float,
         retryable: bool = True,
-        now: datetime | None = None,
     ) -> JobStatus:
-        """Record a failure. Re-queues with backoff, or marks the job permanently failed."""
-        now = now or datetime.now(UTC)
+        """Record a failure. Re-queues with backoff, or marks the job permanently failed.
+
+        Times come from the database clock (``now()``), the same clock ``claim`` compares
+        ``run_after`` against, so app/DB clock skew can't stall or rush retries.
+        """
         terminal = (not retryable) or job.attempts >= job.max_attempts
         values: dict[str, Any] = {
             "last_error": error[:MAX_ERROR_LEN],
@@ -110,10 +114,10 @@ class JobRepository:
             "locked_by": None,
         }
         if terminal:
-            values.update(status=JobStatus.FAILED, finished_at=now)
+            values.update(status=JobStatus.FAILED, finished_at=func.now())
         else:
             delay = backoff_delay(job.attempts, base_backoff_seconds)
-            values.update(status=JobStatus.QUEUED, run_after=now + timedelta(seconds=delay))
+            values.update(status=JobStatus.QUEUED, run_after=func.now() + timedelta(seconds=delay))
         await self.session.execute(
             update(Job)
             .where(Job.id == job.id)
