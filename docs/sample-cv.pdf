@@ -1,0 +1,68 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1873 >>
+stream
+BT
+/F1 11 Tf
+14 TL
+72 740 Td
+(Jordan Rahman) Tj T*
+(Backend Software Engineer - Dhaka, Bangladesh \(open to remote\)) Tj T*
+(jordan.rahman@example.com | github.com/jordan-demo) Tj T*
+() Tj T*
+(SUMMARY) Tj T*
+(Backend engineer with 4 years of experience designing REST APIs and data-intensive services) Tj T*
+(in Python. Comfortable owning features end to end: schema design, API, tests, CI/CD and) Tj T*
+(production monitoring.) Tj T*
+() Tj T*
+(SKILLS) Tj T*
+(Python, FastAPI, Django, SQLAlchemy, PostgreSQL, Redis, Celery, Docker, AWS \(ECS, RDS, S3\),) Tj T*
+(GitHub Actions, pytest, REST, JWT/OAuth, Linux, Git, TypeScript, React) Tj T*
+() Tj T*
+(EXPERIENCE) Tj T*
+(Software Engineer - Finlytics \(fintech SaaS\), 2022-present) Tj T*
+(- Designed and built a FastAPI service for invoice reconciliation processing 1.2M records/day.) Tj T*
+(- Cut p95 API latency from 820 ms to 190 ms by adding composite indexes and rewriting N+1) Tj T*
+(  ORM queries as SQL aggregations in PostgreSQL.) Tj T*
+(- Introduced a Postgres-backed job queue with retries and dead-lettering, replacing ad-hoc cron.) Tj T*
+(- Raised test coverage of the billing module from 41% to 88% with pytest integration tests.) Tj T*
+(- Mentored two junior engineers; led code reviews and wrote the team's API style guide.) Tj T*
+() Tj T*
+(Junior Backend Developer - ShopNest \(e-commerce\), 2020-2022) Tj T*
+(- Built Django REST endpoints for catalogue and checkout used by 80k monthly customers.) Tj T*
+(- Containerised services with Docker and set up GitHub Actions CI, reducing deploy time by 70%.) Tj T*
+(- Implemented JWT authentication with refresh tokens and role-based permissions.) Tj T*
+() Tj T*
+(PROJECTS) Tj T*
+(- Open-source contributor to a FastAPI pagination library \(cursor pagination support\).) Tj T*
+() Tj T*
+(EDUCATION) Tj T*
+(B.Sc. in Computer Science and Engineering - 2020) Tj T*
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000002166 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+2236
+%%EOF
