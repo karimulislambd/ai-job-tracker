@@ -135,13 +135,11 @@ async def seed_demo_template(
                     resume_id=cv.id,
                     status=AnalysisStatus.SUCCEEDED,
                     result=spec.analysis,
-                    model="llama-3.3-70b-versatile",
-                    prompt_tokens=1_850 + i * 13,
-                    completion_tokens=640 + i * 7,
-                    duration_ms=2_400 + i * 90,
+                    # Hand-written sample output, labelled as such (not a real model run).
+                    model="sample data (seeded)",
                     created_at=started,
                     started_at=started,
-                    completed_at=started + timedelta(seconds=2.4),
+                    completed_at=started,
                 )
             )
 

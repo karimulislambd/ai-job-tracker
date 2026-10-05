@@ -41,9 +41,14 @@ class JsonFormatter(logging.Formatter):
 
 class TextFormatter(logging.Formatter):
     def format(self, record: logging.LogRecord) -> str:
-        rid = request_id_var.get()
         base = super().format(record)
-        return f"{base} [rid={rid}]" if rid else base
+        extras = " ".join(
+            f"{k}={v}"
+            for k, v in record.__dict__.items()
+            if k not in _RESERVED and not k.startswith("_")
+        )
+        rid = request_id_var.get()
+        return " ".join(part for part in (base, extras, f"[rid={rid}]" if rid else "") if part)
 
 
 def configure_logging(level: str = "INFO", json_logs: bool = True) -> None:

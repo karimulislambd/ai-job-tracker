@@ -78,8 +78,12 @@ def client_ip(request: Request, settings: Settings) -> str:
     return request.client.host if request.client else "unknown"
 
 
-def rate_limit(bucket: str) -> Callable[..., Awaitable[None]]:
-    """Per-IP fixed-window limit for sensitive endpoints (login, register, refresh, demo)."""
+def rate_limit(bucket: str, multiplier: int = 1) -> Callable[..., Awaitable[None]]:
+    """Per-IP fixed-window limit for sensitive endpoints (login, register, refresh, demo).
+
+    ``multiplier`` scales AUTH_RATE_LIMIT for endpoints legitimately hit more often
+    (e.g. refresh runs on every page load).
+    """
 
     async def _dependency(
         request: Request,
@@ -88,7 +92,7 @@ def rate_limit(bucket: str) -> Callable[..., Awaitable[None]]:
     ) -> None:
         key = f"{bucket}:{client_ip(request, settings)}"
         allowed, retry_after = await limiter.hit(
-            key, settings.auth_rate_limit, settings.auth_rate_window_seconds
+            key, settings.auth_rate_limit * multiplier, settings.auth_rate_window_seconds
         )
         if not allowed:
             raise RateLimitedError(

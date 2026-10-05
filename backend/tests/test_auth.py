@@ -250,3 +250,22 @@ async def test_access_token_contains_expected_claims(user: AuthedUser, settings:
     assert claims["sub"] == str(user.id)
     assert claims["type"] == "access"
     assert claims["exp"] - claims["iat"] == settings.access_token_ttl_minutes * 60
+
+
+async def test_refresh_has_a_larger_rate_limit_budget(app_factory: object) -> None:
+    app = app_factory(auth_rate_limit=2)  # type: ignore[operator]
+    transport = httpx.ASGITransport(app=app)
+    async with httpx.AsyncClient(transport=transport, base_url="http://t") as c:
+        codes = [(await c.post("/api/v1/auth/refresh")).status_code for _ in range(13)]
+    assert codes[:12] == [401] * 12  # 2 * 6 allowed (rejected only for the missing cookie)
+    assert codes[12] == 429
+
+
+def test_text_log_formatter_includes_extras() -> None:
+    import logging
+
+    from app.core.logging import TextFormatter
+
+    record = logging.LogRecord("app", logging.INFO, __file__, 1, "request", (), None)
+    record.status = 201
+    assert "status=201" in TextFormatter("%(message)s").format(record)
