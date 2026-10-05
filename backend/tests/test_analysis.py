@@ -318,7 +318,7 @@ def _groq_with(handler: Any) -> GroqLLMClient:
     transport = httpx.MockTransport(handler)
     return GroqLLMClient(
         "gsk_test",
-        "llama-3.3-70b-versatile",
+        "openai/gpt-oss-120b",
         5.0,
         http_client=httpx.AsyncClient(transport=transport),
     )
@@ -329,7 +329,7 @@ def _completion(content: str) -> dict[str, Any]:
         "id": "chatcmpl-1",
         "object": "chat.completion",
         "created": 1,
-        "model": "llama-3.3-70b-versatile",
+        "model": "openai/gpt-oss-120b",
         "choices": [
             {
                 "index": 0,
@@ -353,7 +353,7 @@ async def test_groq_client_sends_json_mode_request_and_parses_usage() -> None:
     resp = await _groq_with(handler).complete_json("system prompt", "user prompt")
     assert seen["url"].endswith("/openai/v1/chat/completions")
     assert seen["auth"] == "Bearer gsk_test"
-    assert seen["body"]["model"] == "llama-3.3-70b-versatile"
+    assert seen["body"]["model"] == "openai/gpt-oss-120b"
     assert seen["body"]["response_format"] == {"type": "json_object"}
     assert seen["body"]["messages"][0] == {"role": "system", "content": "system prompt"}
     assert resp.prompt_tokens == 900
@@ -394,7 +394,7 @@ async def test_groq_pipeline_end_to_end_with_mocked_http(
     await make_worker(session_factory, settings, groq).run_once()
     done = await _poll(client, user, accepted["analysis_id"])
     assert done["status"] == "succeeded"
-    assert done["model"] == "llama-3.3-70b-versatile"
+    assert done["model"] == "openai/gpt-oss-120b"
     assert done["prompt_tokens"] == 900
 
 
