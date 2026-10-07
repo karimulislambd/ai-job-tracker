@@ -20,9 +20,9 @@ PostgreSQL schema built with Alembic migrations, JWT auth with rotating refresh 
 strict per-tenant isolation, a **Postgres-backed job queue** (`FOR UPDATE SKIP LOCKED`)
 with retries and backoff, SQL aggregations, and 128 integration tests against a real database.
 
-> **Live demo:** _coming soon: `https://<your-app>.vercel.app`_. Click **“Try the demo”**
-> to get a private, pre-filled account. No sign-up needed.
-> API docs: `https://<your-api>.onrender.com/docs`
+> **Live demo:** **[karimul-job-tracker.vercel.app](https://karimul-job-tracker.vercel.app)**. Click **“Try the demo”**
+> to get a private, pre-filled account. No sign-up needed. The API runs on Render's free
+> tier, so the first request after a quiet spell can take 30–60 s while it wakes up.
 
 | Kanban board | AI match analysis |
 |---|---|
