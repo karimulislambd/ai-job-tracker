@@ -33,3 +33,6 @@ next-env.d.ts
 
 # Local Redis snapshots
 dump.rdb
+
+# Local tooling notes
+frontend/AGENTS.md
